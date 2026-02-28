@@ -1,6 +1,8 @@
 Routers
 A router is one of the most common devices you will find in a data center. Its job is to take data on one IP subnet and route that information to a different IP subnet. These subnets might be next to each other in the same data center, or they might be located in different parts of the world.
 
+Think of a router like a traffic officer at an intersection. It looks at where data is going (using IP addresses) and decides which road it should take next. A router connects different types of networks together. For example, it might connect your office network to the internet, or connect two offices in different cities.
+
 Routers operate at OSI layer 3, which is the network layer. At this layer, we work with IP addresses, and routers use these IP addresses to determine the next hop for data traveling across the network.
 
 Sometimes you will see routing functionality built into a switch. These are called layer 3 switches. The switch itself is still operating at layer 2, but it also includes layer 3 routing capabilities within the same device.
