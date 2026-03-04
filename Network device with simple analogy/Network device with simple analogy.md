@@ -94,3 +94,19 @@ Eg
 -After 300 seconds, the cache entry is deleted. The next request forces a new DNS lookup to get the (potentially updated) IP address.
 
 This allows the website administrator to change the server's IP address, confident that all users will have the new information within 5 minutes.
+
+~~~~~~~Cloud Service Models
+🧊Software as a Service	SaaS
+Ready-to-use software delivered over the internet. You simply log in and use the application.
+        Real-World Analogy--
+Renting an Apartment: You just move in and live there. The landlord (provider) is responsible for the building, plumbing, electricity, and renovations.	Google Mail (Gmail), Microsoft 365, Salesforce (as an end-user), Dropbox.
+
+🧊Platform as a Service	PaaS
+	A platform providing tools and building blocks for you to develop and deploy your own applications.
+          Real-World Analogy--
+Renting a Recording Studio: The studio owner provides the room, the soundboard, the microphones (the platform). You bring your band and create the song (your application).	Salesforce Platform (for building custom apps), Google App Engine, AWS Elastic Beanstalk, Heroku.
+
+🧊Infrastructure as a Service	IaaS
+On-demand access to IT infrastructure (servers, storage, networking) for you to run your own software.
+        Real-World Analogy--
+Leasing an Empty Lot: You get the land (infrastructure). You are responsible for building the warehouse (OS), installing your machinery (apps), and managing your inventory (data).	Amazon Web Services (EC2), Microsoft Azure (VMs), Google Compute Engine.
