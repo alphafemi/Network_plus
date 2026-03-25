@@ -1,0 +1,125 @@
+This video provides an excellent, practical guide to the **Magic Number Method**, a fast and efficient shortcut for performing IPv4 subnet calculations without needing to convert to binary. This method is invaluable for quickly determining the subnet ID, broadcast address, and usable host ranges.
+
+Here is a summary of the Magic Number Method, structured as a step-by-step guide.
+
+### The Magic Number Subnetting Method Cheat Sheet
+
+This guide outlines the steps to calculate the four key subnet values (Network ID, Broadcast, First Usable, Last Usable) using the Magic Number method.
+
+---
+
+#### Step 0: The Problem
+
+Given an IP address and subnet mask (in decimal or CIDR), you need to find:
+
+1.  **Network Address (Subnet ID)** - The first address.
+2.  **Broadcast Address** - The last address.
+3.  **First Usable Host** - The first address assignable to a device.
+4.  **Last Usable Host** - The last address assignable to a device.
+
+---
+
+#### Step 1: Prepare the Chart
+
+Create a chart with four rows for the four octets and fill in the given information.
+
+| Octet | 1st | 2nd | 3rd | 4th |
+| :--- | :--- | :--- | :--- | :--- |
+| **IP Address** | . | . | . | . |
+| **Subnet Mask** | . | . | . | . |
+| **Network ID** | . | . | . | . |
+| **Broadcast** | . | . | . | . |
+
+---
+
+#### Step 2: Identify the "Interesting Octet"
+
+The "interesting octet" is the first octet (from left to right) where the subnet mask is **not 255 and not 0**.
+
+- **255:** Means the entire octet is part of the network.
+- **0:** Means the entire octet is part of the host.
+- **Anything else (128, 192, 224, 240, 248, 252, 254):** This is your **interesting octet**.
+
+**Rule for the Network ID (for 255 and 0):**
+- If the mask is **255**: Copy the IP address value down to the Network ID row.
+- If the mask is **0**: Write **0** in the Network ID row.
+- If the mask is the **interesting octet**: Leave blank for now.
+
+---
+
+#### Step 3: Calculate the Magic Number
+
+The Magic Number is the size of the block of addresses for each subnet.
+
+- **Formula:** `Magic Number = 256 - Subnet Mask Value (in the interesting octet)`
+
+**Example:** If the interesting octet's mask is `240`, then Magic Number = 256 - 240 = **16**.
+
+---
+
+#### Step 4: Calculate the Network ID (Subnet ID)
+
+Find the block that contains the IP address in the interesting octet.
+
+1.  Determine the multiples of the Magic Number (e.g., 0, 16, 32, 48, 64, 80...).
+2.  Find which block contains the IP address's value in that octet.
+3.  The **start of that block** is the Network ID value for the interesting octet.
+
+---
+
+#### Step 5: Calculate the Broadcast Address
+
+**Rules for the Broadcast Address:**
+- If the mask is **255**: Copy the Network ID value down to the Broadcast row.
+- If the mask is **0**: Write **255** in the Broadcast row.
+- If the mask is the **interesting octet**: Calculate using the formula: `Broadcast Value = (Network ID Value of interesting octet) + Magic Number - 1`
+
+---
+
+#### Step 6: Calculate Usable Hosts
+
+Once you have the Network ID and Broadcast Address:
+
+- **First Usable Host:** Network ID + 1
+- **Last Usable Host:** Broadcast Address - 1
+
+---
+
+#### Worked Example 1: 165.245.77.14 / 255.255.240.0
+
+| Step | Calculation |
+| :--- | :--- |
+| **1. Setup** | IP: `165.245.77.14` <br> Mask: `255.255.240.0` |
+| **2. Interesting Octet** | Octet 1: 255 (copy IP) <br> Octet 2: 255 (copy IP) <br> **Octet 3: 240** (Interesting Octet) <br> Octet 4: 0 (Network ID = 0) |
+| **3. Magic Number** | 256 - 240 = **16** |
+| **4. Network ID (Octet 3)** | IP value is 77. Find block: 64 (0, 16, 32, 48, 64, 80...). <br> **Network ID = 165.245.64.0** |
+| **5. Broadcast** | Interesting Octet: 64 + 16 - 1 = 79 <br> Octet 4 (mask 0): 255 <br> **Broadcast = 165.245.79.255** |
+| **6. Usable Hosts** | First: 165.245.64.1 <br> Last: 165.245.79.254 |
+
+---
+
+#### Worked Example 2: 10.180.122.244 / 255.248.0.0
+
+| Step | Calculation |
+| :--- | :--- |
+| **1. Setup** | IP: `10.180.122.244` <br> Mask: `255.248.0.0` |
+| **2. Interesting Octet** | Octet 1: 255 (copy IP: 10) <br> **Octet 2: 248** (Interesting Octet) <br> Octet 3: 0 (Network ID = 0) <br> Octet 4: 0 (Network ID = 0) |
+| **3. Magic Number** | 256 - 248 = **8** |
+| **4. Network ID (Octet 2)** | IP value is 180. Find block: 176 (0, 8, 16... 176, 184...). <br> **Network ID = 10.176.0.0** |
+| **5. Broadcast** | Interesting Octet: 176 + 8 - 1 = 183 <br> Octet 3 (mask 0): 255 <br> Octet 4 (mask 0): 255 <br> **Broadcast = 10.183.255.255** |
+| **6. Usable Hosts** | First: 10.176.0.1 <br> Last: 10.183.255.254 |
+
+---
+
+#### Worked Example 3: 172.16.242.133/27
+
+| Step | Calculation |
+| :--- | :--- |
+| **1. Setup (CIDR to Decimal)** | `/27` = `255.255.255.224` <br> IP: `172.16.242.133` <br> Mask: `255.255.255.224` |
+| **2. Interesting Octet** | Octet 1: 255 (copy IP: 172) <br> Octet 2: 255 (copy IP: 16) <br> Octet 3: 255 (copy IP: 242) <br> **Octet 4: 224** (Interesting Octet) |
+| **3. Magic Number** | 256 - 224 = **32** |
+| **4. Network ID (Octet 4)** | IP value is 133. Find block: 128 (0, 32, 64, 96, 128, 160...). <br> **Network ID = 172.16.242.128** |
+| **5. Broadcast** | Interesting Octet: 128 + 32 - 1 = 159 <br> **Broadcast = 172.16.242.159** |
+| **6. Usable Hosts** | First: 172.16.242.129 <br> Last: 172.16.242.158 |
+
+This method eliminates the need for binary conversion, making subnetting calculations fast, accurate, and test-friendly.
