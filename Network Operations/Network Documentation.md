@@ -1,4 +1,3 @@
-This  covers the essential types of network documentation, from physical and logical diagrams to asset tracking and service agreements. Proper documentation is critical for troubleshooting, onboarding new staff, capacity planning, and maintaining service level agreements (SLAs).
 
 
 
